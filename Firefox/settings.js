@@ -1,8 +1,5 @@
 
-
-console.log("test settings from separate file");
 const bookmarkRoot = document.getElementById("bookmark_root");
-bookmarkRoot.innerHTML = "div div";
 
 const bookmarkTreePromise = browser.bookmarks.getTree();
 bookmarkTreePromise.then(displayBookmarkTree, onRejected);
