@@ -1,0 +1,21 @@
+{
+	"manifest_version": 2,
+	"name": "Serial Scene",
+	"version": "1.0.0",
+	"description": "Keep a single bookmark for a serial work, and it will be updated as you read. For webcomics, fiction, and blogs.",
+	"icons": {
+		"48": "icons/border-48.png"
+	},
+	"options_ui": {
+		"page": "settings.html"
+	},
+	"content_scripts": [
+		{
+			"matches": ["*://*.mozilla.org/*"],
+			"js": ["borderify.js"]
+		}
+	],
+	"permissions": [
+		"storage"
+	]
+}
