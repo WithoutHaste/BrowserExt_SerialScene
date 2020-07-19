@@ -7,12 +7,12 @@ bookmarkRoot.innerHTML = "div div";
 const bookmarkTreePromise = browser.bookmarks.getTree();
 bookmarkTreePromise.then(displayBookmarkTree, onRejected);
 
-function displayBookmarkItem(item, root) {
+function displayBookmarkItem(item, root, level) {
 	if(item.url) {
 		displayBookmarkUrl(item, root);
 	}
 	else {
-		displayBookmarkFolder(item, root);
+		displayBookmarkFolder(item, root, level);
 	}
 
 	function displayBookmarkUrl(item, root) {
@@ -28,7 +28,7 @@ function displayBookmarkItem(item, root) {
 		root.appendChild(div);
 	}
 	
-	function displayBookmarkFolder(folder, root) {
+	function displayBookmarkFolder(folder, root, level) {
 		let div = document.createElement('div');
 		div.classList.add("folder");
 		
@@ -39,30 +39,36 @@ function displayBookmarkItem(item, root) {
 		
 		let contents = document.createElement('div');
 		contents.classList.add("folder_contents");
+		if(level > 1) {
+			contents.style.display = "none";
+		}
 		div.appendChild(contents);
-/*		
-		label.onclick = function() {
+
+		label.onclick = function(event) {
+			let label = event.target;
+			let contents = label.nextSibling;
 			if(contents.style.display == "none") {
 				contents.style.display = "block";
 			}
 			else {
 				contents.style.display = "none";
 			}
-		});
-	*/	
+		};
+
 		root.appendChild(div);
 
-		displayBookmarkTree(folder.children, contents);
+		displayBookmarkTree(folder.children, contents, level + 1);
 	}
 }
 
-function displayBookmarkTree(items, root) {
+function displayBookmarkTree(items, root, level) {
 	if(root == null) {
 		root = bookmarkRoot;
+		level = 1;
 	}
 	for(let i=0; i<items.length; i++)
 	{
-		displayBookmarkItem(items[i], root);
+		displayBookmarkItem(items[i], root, level);
 	}
 }
 
