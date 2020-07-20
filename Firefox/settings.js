@@ -26,6 +26,10 @@ function displayBookmarkItem(item, root, level) {
 	}
 	
 	function displayBookmarkFolder(folder, root, level) {
+		if(folder.children.length == 0) {
+			return;
+		}
+		
 		let div = document.createElement('div');
 		div.classList.add("folder");
 		
