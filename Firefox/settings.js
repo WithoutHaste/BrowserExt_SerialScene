@@ -19,9 +19,26 @@ function displayBookmarkItem(item, root, level) {
 		if(item.url.startsWith("place")) {
 			return;
 		}
+		if(item.url.startsWith("data")) {
+			return;
+		}
 		
 		let div = document.createElement('div');
-		div.innerHTML = item.title;
+
+		let checkbox = document.createElement('input');
+		checkbox.setAttribute("type", "checkbox");
+		checkbox.style.display = "inline";
+		div.appendChild(checkbox);
+		
+		let label = document.createElement('span');
+		if(item.title == null || item.title.length == 0) {
+			label.innerHTML = item.url;
+		}
+		else {
+			label.innerHTML = item.title;
+		}
+		div.appendChild(label);
+
 		root.appendChild(div);
 	}
 	
@@ -33,9 +50,15 @@ function displayBookmarkItem(item, root, level) {
 		let div = document.createElement('div');
 		div.classList.add("folder");
 		
+		let checkbox = document.createElement('input');
+		checkbox.setAttribute("type", "checkbox");
+		checkbox.style.display = "inline";
+		div.appendChild(checkbox);
+		
 		let label = document.createElement('div');
+		label.style.display = "inline";
 		label.classList.add("folder_label");
-		label.innerHTML = (folder.title ?? "Folder") + " +/-";
+		label.innerHTML = "📁 " + folder.title;
 		div.appendChild(label);
 		
 		let contents = document.createElement('div');
