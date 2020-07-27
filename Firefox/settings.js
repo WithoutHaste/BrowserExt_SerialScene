@@ -28,6 +28,7 @@ function displayBookmarkItem(item, root, level) {
 		let checkbox = document.createElement('input');
 		checkbox.setAttribute("type", "checkbox");
 		checkbox.style.display = "inline";
+		checkbox.addEventListener("change", saveSettings);
 		div.appendChild(checkbox);
 		
 		let label = document.createElement('span');
@@ -49,16 +50,20 @@ function displayBookmarkItem(item, root, level) {
 		
 		let div = document.createElement('div');
 		div.classList.add("folder");
+		div.dataset.folderName = folder.title;
 		
 		let checkbox = document.createElement('input');
 		checkbox.setAttribute("type", "checkbox");
 		checkbox.style.display = "inline";
+		checkbox.classList.add("folder_checkbox");
+		checkbox.addEventListener("change", saveSettings);
 		div.appendChild(checkbox);
 		
 		let label = document.createElement('div');
 		label.style.display = "inline";
 		label.classList.add("folder_label");
-		label.innerHTML = "📁 " + folder.title;
+		label.dataset.folderLabel = (level==1?"All":folder.title);
+		label.innerHTML = "📁 " + label.dataset.folderLabel;
 		div.appendChild(label);
 		
 		let contents = document.createElement('div');
@@ -100,3 +105,59 @@ function onRejected(error) {
 	console.log(`Error: ${error}`);
 }
 
+function saveSettings() {
+	let selected = getFolderTreeSelections(bookmarkRoot, [], []);
+	
+	browser.storage.local.set({
+		selected: selected
+	});
+	
+	browser.storage.local.get().then((results) => console.log(results));
+}
+
+//flattens tree structure into array of routes
+//result looks like
+//["All", "Other Bookmarks", "Comics", "*"]
+function getFolderSelections(folderElement, folderRouteArray, selectedArray) {
+	if(folderElement == null) {
+		return selectedArray;
+	}
+	let folderName = folderElement.dataset.folderName;
+	let folderChecked = false;
+	let folderContents = null;
+	for(let i=0; i<folderElement.children.length; i++)
+	{
+		let child = folderElement.children[i];
+		if(child.classList.contains("folder_checkbox")) {
+			folderChecked = child.checked;
+		}
+		if(child.classList.contains("folder_contents")) {
+			folderContents = child;
+		}
+	}
+	if(folderChecked) {
+		let newRoute = folderRouteArray.slice();
+		newRoute.push(folderName);
+		selectedArray.push(newRoute);
+	}
+	else {
+		let newRouteArray = folderRouteArray.slice();
+		newRouteArray.push(folderName);
+		selectedArray = getFolderTreeSelections(folderContents, newRouteArray, selectedArray);
+	}
+	return selectedArray;
+}
+function getFolderTreeSelections(contentsElement, folderRouteArray, selectedArray) {
+	if(contentsElement == null) {
+		return selectedArray;
+	}
+	for(let i=0; i<contentsElement.children.length; i++)
+	{
+		let child = contentsElement.children[i];
+		if(child.classList.contains("folder")) {
+			selectedArray = getFolderSelections(child, folderRouteArray, selectedArray);
+		}
+	}
+	return selectedArray;
+}
+//TODO also check for url selections
