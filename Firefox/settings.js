@@ -28,6 +28,8 @@ function displayBookmarkItem(item, root, level) {
 		let checkbox = document.createElement('input');
 		checkbox.setAttribute("type", "checkbox");
 		checkbox.style.display = "inline";
+		checkbox.classList.add("url_checkbox");
+		checkbox.dataset.url = item.url;
 		checkbox.addEventListener("change", saveSettings);
 		div.appendChild(checkbox);
 		
@@ -50,12 +52,12 @@ function displayBookmarkItem(item, root, level) {
 		
 		let div = document.createElement('div');
 		div.classList.add("folder");
-		div.dataset.folderName = folder.title;
 		
 		let checkbox = document.createElement('input');
 		checkbox.setAttribute("type", "checkbox");
 		checkbox.style.display = "inline";
 		checkbox.classList.add("folder_checkbox");
+		checkbox.dataset.folderName = folder.title;
 		checkbox.addEventListener("change", saveSettings);
 		div.appendChild(checkbox);
 		
@@ -122,13 +124,14 @@ function getFolderSelections(folderElement, folderRouteArray, selectedArray) {
 	if(folderElement == null) {
 		return selectedArray;
 	}
-	let folderName = folderElement.dataset.folderName;
+	let folderName = null;
 	let folderChecked = false;
 	let folderContents = null;
 	for(let i=0; i<folderElement.children.length; i++)
 	{
 		let child = folderElement.children[i];
 		if(child.classList.contains("folder_checkbox")) {
+			folderName = child.dataset.folderName;
 			folderChecked = child.checked;
 		}
 		if(child.classList.contains("folder_contents")) {
@@ -157,7 +160,15 @@ function getFolderTreeSelections(contentsElement, folderRouteArray, selectedArra
 		if(child.classList.contains("folder")) {
 			selectedArray = getFolderSelections(child, folderRouteArray, selectedArray);
 		}
+		else if(child.tagName.toLowerCase() == "div") {
+			//urls are contained in a div
+			selectedArray = getFolderTreeSelections(child, folderRouteArray, selectedArray);
+		}
+		else if(child.classList.contains("url_checkbox") && child.checked) {
+			let newRoute = folderRouteArray.slice();
+			newRoute.push(child.dataset.url);
+			selectedArray.push(newRoute);
+		}
 	}
 	return selectedArray;
 }
-//TODO also check for url selections
