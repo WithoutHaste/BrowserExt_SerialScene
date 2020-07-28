@@ -1,10 +1,23 @@
 
 const bookmarkRoot = document.getElementById("bookmark_root");
+let startingSelectedBookmarks = [];
 
-const bookmarkTreePromise = browser.bookmarks.getTree();
-bookmarkTreePromise.then(displayBookmarkTree, onRejected);
+Promise.all([
+	browser.storage.local.get("selected"),
+	browser.bookmarks.getTree()
+]).then(function(results) {
+	startingSelectedBookmarks = results[0].selected;
+	let bookmarks = results[1];
+console.log(startingSelectedBookmarks);
+console.log(bookmarks);
+	displayBookmarkTree(bookmarks);
+}, function() {
+	let span = document.createElement('span');
+	span.innerHTML = "⚠️ An error has occurred";
+	bookmarkRoot.appendChild(span);
+});
 
-function displayBookmarkItem(item, root, level) {
+function displayBookmarkItem(item, root, level, pathArray) {
 	if(item.url) {
 		displayBookmarkUrl(item, root);
 	}
@@ -23,13 +36,16 @@ function displayBookmarkItem(item, root, level) {
 			return;
 		}
 		
+		let urlRemainder = stripFilename(item.url);
+		
 		let div = document.createElement('div');
 
 		let checkbox = document.createElement('input');
 		checkbox.setAttribute("type", "checkbox");
 		checkbox.style.display = "inline";
 		checkbox.classList.add("url_checkbox");
-		checkbox.dataset.url = item.url;
+		checkbox.dataset.url = urlRemainder;
+		checkbox.checked = checkboxIsSelected(pathArray.slice(), urlRemainder);
 		checkbox.addEventListener("change", saveSettings);
 		div.appendChild(checkbox);
 		
@@ -58,6 +74,7 @@ function displayBookmarkItem(item, root, level) {
 		checkbox.style.display = "inline";
 		checkbox.classList.add("folder_checkbox");
 		checkbox.dataset.folderName = folder.title;
+		checkbox.checked = checkboxIsSelected(pathArray.slice(), folder.title);
 		checkbox.addEventListener("change", saveSettings);
 		div.appendChild(checkbox);
 		
@@ -88,18 +105,21 @@ function displayBookmarkItem(item, root, level) {
 
 		root.appendChild(div);
 
-		displayBookmarkTree(folder.children, contents, level + 1);
+		let newPathArray = pathArray.slice();
+		newPathArray.push(folder.title);
+		displayBookmarkTree(folder.children, contents, level + 1, newPathArray);
 	}
 }
 
-function displayBookmarkTree(items, root, level) {
+function displayBookmarkTree(items, root, level, pathArray) {
 	if(root == null) {
 		root = bookmarkRoot;
 		level = 1;
+		pathArray = [];
 	}
 	for(let i=0; i<items.length; i++)
 	{
-		displayBookmarkItem(items[i], root, level);
+		displayBookmarkItem(items[i], root, level, pathArray);
 	}
 }
 
@@ -171,4 +191,43 @@ function getFolderTreeSelections(contentsElement, folderRouteArray, selectedArra
 		}
 	}
 	return selectedArray;
+}
+
+function checkboxIsSelected(pathArray, lastElement) {
+	pathArray.push(lastElement);
+	for(let i=0; i<startingSelectedBookmarks.length; i++)
+	{
+		if(arraysMatch(pathArray, startingSelectedBookmarks[i])) {
+			return true;
+		}
+	}
+	return false;	
+}
+function arraysMatch(a, b) {
+	if(a.length != b.length) {
+		return false;
+	}
+	for(let i=0; i<a.length; i++)
+	{
+		if(a[i] != b[i]) {
+			return false;
+		}
+	}
+	return true;
+}
+
+//return url without ending filename
+function stripFilename(url) {
+	if(url.endsWith("/")) {
+		return url;
+	}
+	let filename = url.substring(url.lastIndexOf('/')+1);
+	if(filename.indexOf(".") == -1) {
+		return url;
+	}
+	let remainder = url.substring(0, url.length - filename.length);
+	if(remainder == "https://" || remainder == "http://") {
+		return url;
+	}
+	return remainder;
 }
