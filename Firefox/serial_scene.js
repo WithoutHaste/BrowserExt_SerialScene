@@ -1,6 +1,10 @@
 
 console.log("test A");
 
+let x = browser.bookmarks.getTree();
+x.then(serialScene);
+/*
+
 Promise.all([
 //	browser.storage.local.get("selected")
 	browser.bookmarks.getTree()
@@ -23,6 +27,7 @@ Promise.all([
 	console.log("error");
 	//no action on errors
 });
+*/
 
 function serialScene(selections, bookmarks) {
 	console.log("test");
