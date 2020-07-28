@@ -8,8 +8,6 @@ Promise.all([
 ]).then(function(results) {
 	startingSelectedBookmarks = results[0].selected;
 	let bookmarks = results[1];
-console.log(startingSelectedBookmarks);
-console.log(bookmarks);
 	displayBookmarkTree(bookmarks);
 }, function() {
 	let span = document.createElement('span');
