@@ -6,7 +6,7 @@ Promise.all([
 	browser.storage.local.get("selected"),
 	browser.bookmarks.getTree()
 ]).then(function(results) {
-	startingSelectedBookmarks = results[0].selected;
+	startingSelectedBookmarks = results[0].selected ?? [];
 	let bookmarks = results[1];
 	displayBookmarkTree(bookmarks);
 }, function() {
@@ -27,10 +27,7 @@ function displayBookmarkItem(item, root, level, pathArray) {
 		if(item.unmodifiable) {
 			return;
 		}
-		if(item.url.startsWith("place")) {
-			return;
-		}
-		if(item.url.startsWith("data")) {
+		if(!item.url.startsWith("http")) {
 			return;
 		}
 		

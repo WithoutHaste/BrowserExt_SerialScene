@@ -2,19 +2,20 @@
 	"manifest_version": 2,
 	"name": "Serial Scene",
 	"version": "1.0.0",
-	"description": "Keep a single bookmark for a serial work, and it will be updated as you read. For webcomics, fiction, and blogs.",
+	"developer": {
+		"name": "Without Haste",
+		"url": "http://withouthaste.com"
+	},
+	"description": "Keep a single bookmark for a serial work, and it will be updated as you read. For webcomics, fiction, and blogs. Open the extension options to check off each bookmark or bookmark folder you want Serial Scene to manage.",
 	"icons": {
 		"48": "icons/border-48.png"
 	},
 	"options_ui": {
 		"page": "settings.html"
 	},
-	"content_scripts": [
-		{
-			"matches": ["<all_urls>"],
-			"js": ["serial_scene.js"]
-		}
-	],
+	"background": {
+		"scripts": ["serial_scene_background.js"]
+	},
 	"permissions": [
 		"bookmarks",
 		"storage",
