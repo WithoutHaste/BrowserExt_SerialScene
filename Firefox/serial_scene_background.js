@@ -22,7 +22,6 @@ function serial_scene_url_changed(event) {
 		]).then(function(results) {
 			let selections = results[0].selected;
 			let bookmarks = results[1];
-	console.log(bookmarks);		
 			serial_scene_update_bookmarks(url, selections, bookmarks);
 		}, function() {
 			//no action on errors
@@ -70,7 +69,7 @@ function serial_scene_update_bookmarks(url, selections, bookmarks) {
 		
 		function searchBookmarkFolder(bookmarks) {
 			let newPathArray = pathArray.slice();
-			newPathArray.push(bookmarks.title);
+			newPathArray.push(bookmarks.id);
 
 			if(!bookmarkIsSelected(newPathArray)) return;
 

@@ -66,8 +66,8 @@ function displayBookmarkItem(item, root, level, pathArray) {
 		checkbox.setAttribute("type", "checkbox");
 		checkbox.style.display = "inline";
 		checkbox.classList.add("folder_checkbox");
-		checkbox.dataset.folderName = folder.title;
-		checkbox.checked = checkboxIsSelected(pathArray.slice(), folder.title);
+		checkbox.dataset.folderId = folder.id;
+		checkbox.checked = checkboxIsSelected(pathArray.slice(), folder.id);
 		checkbox.addEventListener("change", saveSettings);
 		div.appendChild(checkbox);
 		
@@ -99,7 +99,7 @@ function displayBookmarkItem(item, root, level, pathArray) {
 		root.appendChild(div);
 
 		let newPathArray = pathArray.slice();
-		newPathArray.push(folder.title);
+		newPathArray.push(folder.id);
 		displayBookmarkTree(folder.children, contents, level + 1, newPathArray);
 	}
 }
@@ -135,14 +135,14 @@ function getFolderSelections(folderElement, folderRouteArray, selectedArray) {
 	if(folderElement == null) {
 		return selectedArray;
 	}
-	let folderName = null;
+	let folderId = null;
 	let folderChecked = false;
 	let folderContents = null;
 	for(let i=0; i<folderElement.children.length; i++)
 	{
 		let child = folderElement.children[i];
 		if(child.classList.contains("folder_checkbox")) {
-			folderName = child.dataset.folderName;
+			folderId = child.dataset.folderId;
 			folderChecked = child.checked;
 		}
 		if(child.classList.contains("folder_contents")) {
@@ -151,12 +151,12 @@ function getFolderSelections(folderElement, folderRouteArray, selectedArray) {
 	}
 	if(folderChecked) {
 		let newRoute = folderRouteArray.slice();
-		newRoute.push(folderName);
+		newRoute.push(folderId);
 		selectedArray.push(newRoute);
 	}
 	else {
 		let newRouteArray = folderRouteArray.slice();
-		newRouteArray.push(folderName);
+		newRouteArray.push(folderId);
 		selectedArray = getFolderTreeSelections(folderContents, newRouteArray, selectedArray);
 	}
 	return selectedArray;
