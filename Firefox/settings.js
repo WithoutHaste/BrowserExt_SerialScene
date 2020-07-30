@@ -31,16 +31,14 @@ function displayBookmarkItem(item, root, level, pathArray) {
 			return;
 		}
 		
-		let urlRemainder = stripFilename(item.url);
-		
 		let div = document.createElement('div');
 
 		let checkbox = document.createElement('input');
 		checkbox.setAttribute("type", "checkbox");
 		checkbox.style.display = "inline";
 		checkbox.classList.add("url_checkbox");
-		checkbox.dataset.url = urlRemainder;
-		checkbox.checked = checkboxIsSelected(pathArray.slice(), urlRemainder);
+		checkbox.dataset.bookmarkId = item.id;
+		checkbox.checked = checkboxIsSelected(pathArray.slice(), item.id);
 		checkbox.addEventListener("change", saveSettings);
 		div.appendChild(checkbox);
 		
@@ -128,8 +126,6 @@ function saveSettings() {
 	browser.storage.local.set({
 		selected: selected
 	});
-	
-	browser.storage.local.get().then((results) => console.log(results));
 }
 
 //flattens tree structure into array of routes
@@ -181,7 +177,7 @@ function getFolderTreeSelections(contentsElement, folderRouteArray, selectedArra
 		}
 		else if(child.classList.contains("url_checkbox") && child.checked) {
 			let newRoute = folderRouteArray.slice();
-			newRoute.push(child.dataset.url);
+			newRoute.push(child.dataset.bookmarkId);
 			selectedArray.push(newRoute);
 		}
 	}
@@ -209,20 +205,4 @@ function arraysMatch(a, b) {
 		}
 	}
 	return true;
-}
-
-//return url without ending filename
-function stripFilename(url) {
-	if(url.endsWith("/")) {
-		return url;
-	}
-	let filename = url.substring(url.lastIndexOf('/')+1);
-	if(filename.indexOf(".") == -1) {
-		return url;
-	}
-	let remainder = url.substring(0, url.length - filename.length);
-	if(remainder == "https://" || remainder == "http://") {
-		return url;
-	}
-	return remainder;
 }

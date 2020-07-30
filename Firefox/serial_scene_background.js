@@ -22,6 +22,7 @@ function serial_scene_url_changed(event) {
 		]).then(function(results) {
 			let selections = results[0].selected;
 			let bookmarks = results[1];
+	console.log(bookmarks);		
 			serial_scene_update_bookmarks(url, selections, bookmarks);
 		}, function() {
 			//no action on errors
@@ -30,6 +31,7 @@ function serial_scene_url_changed(event) {
 }
 
 function serial_scene_update_bookmarks(url, selections, bookmarks) {
+	let urlPrefix = stripFilename(url);
 	searchBookmarkTree(bookmarks);
 	
 	function searchBookmarkTree(bookmarks, pathArray) {
@@ -53,12 +55,13 @@ function serial_scene_update_bookmarks(url, selections, bookmarks) {
 			if(bookmark.unmodifiable) return;
 			if(!bookmark.url.startsWith("http")) return;
 			if(bookmark.url == url) return;
+
+			let bookmarkPrefix = stripFilename(bookmark.url);
 			
-			let urlRemainder = stripFilename(bookmark.url);
-			if(urlRemainder != stripFilename(url)) return;
+			if(bookmarkPrefix != urlPrefix) return;
 			
 			let newPathArray = pathArray.slice();
-			newPathArray.push(urlRemainder);
+			newPathArray.push(bookmark.id);
 			if(!bookmarkIsSelected(newPathArray)) return;
 			
 			//update bookmark
@@ -73,22 +76,6 @@ function serial_scene_update_bookmarks(url, selections, bookmarks) {
 
 			searchBookmarkTree(bookmarks.children, newPathArray);
 		}
-	}
-	
-	//return url without ending filename
-	function stripFilename(url) {
-		if(url.endsWith("/")) {
-			return url;
-		}
-		let filename = url.substring(url.lastIndexOf('/')+1);
-		if(filename.indexOf(".") == -1) {
-			return url;
-		}
-		let remainder = url.substring(0, url.length - filename.length);
-		if(remainder == "https://" || remainder == "http://") {
-			return url;
-		}
-		return remainder;
 	}
 	
 	//true for "you are part way through a folder match"

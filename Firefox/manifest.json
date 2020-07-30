@@ -14,7 +14,7 @@
 		"page": "settings.html"
 	},
 	"background": {
-		"scripts": ["serial_scene_background.js"]
+		"scripts": ["shared.js", "serial_scene_background.js"]
 	},
 	"permissions": [
 		"bookmarks",
