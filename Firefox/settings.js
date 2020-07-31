@@ -11,7 +11,7 @@ Promise.all([
 	displayBookmarkTree(bookmarks);
 }, function() {
 	let span = document.createElement('span');
-	span.innerHTML = "⚠️ An error has occurred";
+	span.textContent = "⚠️ An error has occurred";
 	bookmarkRoot.appendChild(span);
 });
 
@@ -44,10 +44,10 @@ function displayBookmarkItem(item, root, level, pathArray) {
 		
 		let label = document.createElement('span');
 		if(item.title == null || item.title.length == 0) {
-			label.innerHTML = item.url;
+			label.textContent = item.url;
 		}
 		else {
-			label.innerHTML = item.title;
+			label.textContent = item.title;
 		}
 		div.appendChild(label);
 
@@ -75,7 +75,7 @@ function displayBookmarkItem(item, root, level, pathArray) {
 		label.style.display = "inline";
 		label.classList.add("folder_label");
 		label.dataset.folderLabel = (level==1?"All":folder.title);
-		label.innerHTML = "📁 " + label.dataset.folderLabel;
+		label.textContent = "📁 " + label.dataset.folderLabel;
 		div.appendChild(label);
 		
 		let contents = document.createElement('div');
