@@ -1,3 +1,5 @@
+being reviewed here: https://addons.mozilla.org/en-US/developers/addons
+
 next steps?
 
 some comics have their homepage as "current" - don't update url to a simpler (just the domain) url, keep it at the more complex specific-page
