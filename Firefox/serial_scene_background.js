@@ -101,8 +101,9 @@ function serial_scene_update_bookmarks(url, selections, bookmarks) {
 
 	//return url without ending filename
 	function stripFilename(url) {
-		if(url.endsWith("/")) {
-			return url;
+		while(url.endsWith("/")) {
+			url = url.substring(0, url.length - 1);
+			//remove trailing "/" ex: https://xkcd.com/794/
 		}
 		let filename = url.substring(url.lastIndexOf('/')+1);
 		//not checking for a . in the file name - ex: mangakakalot does not use file extensions
