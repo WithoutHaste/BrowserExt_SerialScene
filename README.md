@@ -10,8 +10,9 @@ Open the extension's options page to select which bookmarks and bookmark folders
 
 ## Versions
 
-### 1.0.0
+[FireFox v1.1.0](https://addons.mozilla.org/en-US/firefox/addon/serial-scene/)
+- Supports urls that end with a "/"
+- Include empty bookmark folders on Options page
 
-[Initial release](https://addons.mozilla.org/en-US/firefox/addon/serial-scene/)
-- Platform: Firefox
+FireFox v1.0.0
 - Supports serial works where just the last segment of the url changes.
