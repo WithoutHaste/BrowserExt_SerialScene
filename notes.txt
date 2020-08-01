@@ -1,9 +1,12 @@
-being reviewed here: https://addons.mozilla.org/en-US/developers/addons
 
 next steps?
 
+YES: should options show even empty folders?
+
+To support xkcd: if the last char in url is "/" then take off the next segment too
+ex: http://xkcd.com/794/
+
 some comics have their homepage as "current" - don't update url to a simpler (just the domain) url, keep it at the more complex specific-page
 
+To support basic instructions and many blogs:
 look for the "yyyy/mm/dd" blog format - if it's there, count all that into the changing filename
-
-should options show even empty folders?
