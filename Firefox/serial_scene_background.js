@@ -98,20 +98,24 @@ function serial_scene_update_bookmarks(url, selections, bookmarks) {
 		}
 		return true;
 	}
+}
 
-	//return url without ending filename
-	function stripFilename(url) {
-		while(url.endsWith("/")) {
-			url = url.substring(0, url.length - 1);
-			//remove trailing "/" ex: https://xkcd.com/794/
-		}
-		let filename = url.substring(url.lastIndexOf('/')+1);
-		//not checking for a . in the file name - ex: mangakakalot does not use file extensions
-
-		let remainder = url.substring(0, url.length - filename.length);
-		if(remainder == "https://" || remainder == "http://") {
-			return url;
-		}
-		return remainder;
+//return url without ending filename
+function stripFilename(url) {
+	let remainder = url;
+	
+	while(remainder.endsWith("/")) {
+		remainder = remainder.substring(0, remainder.length - 1);
 	}
+	
+	let filename = remainder.substring(remainder.lastIndexOf('/')+1);
+	remainder = remainder.substring(0, remainder.length - filename.length);
+	
+	//yyyy/mm/dd blog format
+	remainder = remainder.replace(/\d{4}\/\d{1,2}\/\d{1,2}\/.*/, "");
+	
+	if(remainder == "https://" || remainder == "http://") {
+		return url;
+	}
+	return remainder;
 }

@@ -11,7 +11,8 @@ Open the extension's options page to select which bookmarks and bookmark folders
 ## Versions
 
 [FireFox v1.1.0](https://addons.mozilla.org/en-US/firefox/addon/serial-scene/)
-- Supports urls that end with a "/"
+- Supports urls that end with a `/`
+- Supports blog-format urls that include a `yyyy/mm/dd` in the path
 - Include empty bookmark folders on Options page
 
 FireFox v1.0.0
