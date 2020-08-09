@@ -4,6 +4,10 @@ A browser extension/add-on for updating bookmarks as you progress through serial
 
 Keep a single bookmark for a serial work, and it will be updated as you read. For webcomics, fiction, and blogs.
 
+## Download
+
+[Firefox Add-On Page](https://addons.mozilla.org/en-US/firefox/addon/serial-scene/?src=search)
+
 ## Settings
 
 Open the extension's options page to select which bookmarks and bookmark folders you want Serial Scene to manage.
