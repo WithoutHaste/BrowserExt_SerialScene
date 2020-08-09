@@ -6,7 +6,7 @@ Keep a single bookmark for a serial work, and it will be updated as you read. Fo
 
 ## Download
 
-[Firefox Add-On Page](https://addons.mozilla.org/en-US/firefox/addon/serial-scene/?src=search)
+[Firefox Add-On Page](https://addons.mozilla.org/en-US/firefox/addon/serial-scene/)
 
 ## Settings
 
@@ -14,7 +14,7 @@ Open the extension's options page to select which bookmarks and bookmark folders
 
 ## Versions
 
-[FireFox v1.1.0](https://addons.mozilla.org/en-US/firefox/addon/serial-scene/)
+FireFox v1.1.0
 - Supports urls that end with a `/`
 - Supports blog-format urls that include a `yyyy/mm/dd` in the path
 - Include empty bookmark folders on Options page
