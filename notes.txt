@@ -1,4 +1,8 @@
 
 next steps?
 
+Matt wants to use it for Webtoons, which uses in-page navigation
+the url is updated, but it looks like serial_scene is not triggered
+ex: https://www.webtoons.com/en/romance/lore-olympus/episode-111/viewer?title_no=1320&episode_no=115
+
 some comics have their homepage as "current" - don't update url to a simpler (just the domain) url, keep it at the more complex specific-page
