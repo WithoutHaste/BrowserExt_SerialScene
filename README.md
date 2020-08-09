@@ -12,6 +12,11 @@ Keep a single bookmark for a serial work, and it will be updated as you read. Fo
 
 Open the extension's options page to select which bookmarks and bookmark folders you want Serial Scene to manage.
 
+If you use private browsing, enable the extension in private windows in order to access to options page.
+
+**How to View Extension Options**  
+Tools menu > Options > Extensions & Themes (Puzzle Piece icon) > select an Extension
+
 ## Versions
 
 FireFox v1.1.0
